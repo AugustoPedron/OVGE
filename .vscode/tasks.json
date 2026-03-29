@@ -15,6 +15,20 @@
       }
     },
     {
+      "label": "CMake Preset (Debug)",
+      "type": "shell",
+      "command": "cmake --preset Debug",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "dependsOn": "CMake Configure (Debug)"
+    },    
+    {
       "label": "CMake Build (Debug)",
       "type": "shell",
       "command": "cmake --build --preset Debug",
@@ -26,7 +40,7 @@
         "reveal": "always",
         "panel": "shared"
       },
-      "dependsOn": "CMake Configure (Debug)"
+      "dependsOn": "CMake Preset (Debug)"
     },
     {
       "label": "Run OVGE",
