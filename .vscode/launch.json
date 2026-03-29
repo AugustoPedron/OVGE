@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug OVGE",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/out/build/Debug/OVGE.exe",
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:/Program Files/MSYS2/ucrt64/bin/gdb.exe",
+      "environment": [
+        {
+          "name": "PATH",
+          "value": "C:/Program Files/MSYS2/ucrt64/bin;${env:PATH}"
+        }
+      ]
+    }
+  ]
+}

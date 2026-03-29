@@ -1,0 +1,26 @@
+{
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "Debug",
+            "generator": "Ninja",
+            "displayName": "GCC 15.2.0 x86_64-w64-mingw32 (ucrt64)",
+            "description": "Using compilers: C = C:\\Program Files\\MSYS2\\ucrt64\\bin\\gcc.exe, CXX = C:\\Program Files\\MSYS2\\ucrt64\\bin\\g++.exe",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "C:/Program Files/MSYS2/ucrt64/bin/gcc.exe",
+                "CMAKE_CXX_COMPILER": "C:/Program Files/MSYS2/ucrt64/bin/g++.exe",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "Debug",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "Debug"
+        }
+    ]
+}
