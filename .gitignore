@@ -43,3 +43,4 @@
 #CMake ignores
 build/
 out/
+CMakeCache.txt
