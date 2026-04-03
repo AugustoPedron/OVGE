@@ -13,6 +13,10 @@
         {
           "name": "PATH",
           "value": "C:/Program Files/MSYS2/ucrt64/bin;${env:PATH}"
+        },
+        {
+          "name": "VK_LAYER_PATH",
+          "value": "C:/Program Files/MSYS2/ucrt64/bin"
         }
       ]
     }
