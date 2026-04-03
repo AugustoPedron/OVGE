@@ -39,8 +39,7 @@
       "presentation": {
         "reveal": "always",
         "panel": "shared"
-      },
-      "dependsOn": "CMake Preset (Debug)"
+      }
     },
     {
       "label": "Run OVGE",
