@@ -1,7 +1,7 @@
 #pragma once
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+#include "Device/Device.hpp"
+#include "GLFWImporter.hpp"
 
 #include <cstdlib>
 #include <memory>
@@ -23,6 +23,8 @@ private:
 
     void createInstance();
 
+    void createSurface();
+
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, 
         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData);
 
@@ -34,14 +36,20 @@ private:
 
     void mainLoop();
 
+    void pickPhysicalDevice();
+
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 
     void setupDebugMessenger();
 
-    GLFWwindow* m_window;
+    std::shared_ptr<Device> m_device;
+
+    VkDebugUtilsMessengerEXT m_debugMessenger;
+    
+    VkSurfaceKHR m_vkSurface;    
 
     VkInstance m_vkInstance;
 
-    VkDebugUtilsMessengerEXT m_debugMessenger;
+    GLFWwindow* m_window;
     
 };

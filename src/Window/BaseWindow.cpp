@@ -1,4 +1,5 @@
 #include "Window/BaseWindow.hpp"
+#include "ValidationLayers/ValidationLayers.hpp"
 
 #include <cstring>
 #include <iostream>
@@ -9,16 +10,6 @@ using namespace std;
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
 const string WINDOW_NAME = "OVGE";
-
-const vector<const char*> validationLayers = {
-    "VK_LAYER_KHRONOS_validation"
-};
-
-#ifdef NDEBUG
-    const bool enableValidationLayers = false;
-#else
-    const bool enableValidationLayers = true;
-#endif
 
 VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger)
 {
@@ -38,13 +29,16 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT
     }
 }
 
-BaseWindow::BaseWindow(): m_window(nullptr)
+BaseWindow::BaseWindow(): m_device(nullptr), m_window(nullptr)
 {
 
 }
 
 BaseWindow::~BaseWindow()
 {
+    m_device.reset();
+    
+    cleanup();
 }
 
 bool BaseWindow::checkValidationLayerSupport()
@@ -83,6 +77,8 @@ void BaseWindow::cleanup()
     {
         DestroyDebugUtilsMessengerEXT(m_vkInstance, m_debugMessenger, nullptr);
     }
+
+    vkDestroySurfaceKHR(m_vkInstance, m_vkSurface, nullptr);
 
     vkDestroyInstance(m_vkInstance, nullptr);
 
@@ -144,6 +140,14 @@ void BaseWindow::createInstance()
     }
 }
 
+void BaseWindow::createSurface()
+{
+    if (glfwCreateWindowSurface(m_vkInstance, m_window, nullptr, &m_vkSurface) != VK_SUCCESS) {
+        throw std::runtime_error("failed to create window surface!");
+    }
+
+}
+
 VKAPI_ATTR VkBool32 VKAPI_CALL BaseWindow::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType,
     const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
 {
@@ -174,6 +178,10 @@ void BaseWindow::initVulkan()
     createInstance();
 
     setupDebugMessenger();
+
+    createSurface();
+
+    pickPhysicalDevice();
 }
 
 void BaseWindow::initWindow()
@@ -184,6 +192,12 @@ void BaseWindow::initWindow()
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     m_window = glfwCreateWindow(WIDTH, HEIGHT, WINDOW_NAME.c_str(), nullptr, nullptr);
+
+    if(m_window == nullptr)
+    {
+        throw std::runtime_error("Failed to create window instance");
+    }
+
 }
 
 void BaseWindow::mainLoop()
@@ -191,6 +205,16 @@ void BaseWindow::mainLoop()
     while (!glfwWindowShouldClose(m_window))
     {
         glfwPollEvents();
+    }
+}
+
+void BaseWindow::pickPhysicalDevice()
+{
+    m_device = make_shared<Device>(&m_vkInstance, &m_vkSurface);
+
+    if(m_device == nullptr)
+    {
+        throw std::runtime_error("Failed to create device instance");
     }
 }
 
@@ -207,7 +231,6 @@ void BaseWindow::run()
     initWindow();
     initVulkan();
     mainLoop();
-    cleanup();
 }
 
 void BaseWindow::setupDebugMessenger()
